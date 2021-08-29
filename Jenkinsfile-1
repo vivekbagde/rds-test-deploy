@@ -1,0 +1,13 @@
+pipeline {
+    agent any
+    stages {
+        stage('info') {
+            environment {
+                SECRET_VALUE = credentials('dbdevops')
+            }
+            steps {
+                sh 'sudo docker run --rm -v $JENKINS_HOME/prod/flywayconf:/flyway/conf -v $JENKINS_HOME/prod/migrations:/flyway/sql -v $JENKINS_HOME/prod/driverpost:/flyway/drivers flyway/flyway -user=$SECRET_VALUE_USR -password=$SECRET_VALUE_PSW -baselineVersion=1.0 $CHOICE'
+            }
+        }
+    }
+}
